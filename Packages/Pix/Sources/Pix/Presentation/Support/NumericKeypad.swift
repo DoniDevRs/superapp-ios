@@ -1,4 +1,5 @@
 import SwiftUI
+import SuperAppDesignSystem
 
 /// Teclado numérico usado na tela de valor, com alvos de toque ≥48pt
 /// (ver anotação do protótipo) e suporte a Dynamic Type nos rótulos.
@@ -35,12 +36,12 @@ struct NumericKeypad: View {
             }
         } label: {
             Text(key)
-                .font(.title2)
+                .dsFont(DSFont.title)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: PixTheme.minimumTapTarget)
         }
         .buttonStyle(.plain)
-        .background(PixTheme.secondaryBackground)
+        .background(DSColor.surface)
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
         .accessibilityLabel(accessibilityLabel(for: key))
     }

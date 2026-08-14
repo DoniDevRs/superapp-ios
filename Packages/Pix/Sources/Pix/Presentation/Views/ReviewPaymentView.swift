@@ -1,4 +1,5 @@
 import SwiftUI
+import SuperAppDesignSystem
 
 /// Tela 2 de 3 — destinatário selecionado + "Quanto você quer enviar?" +
 /// resumo revisável antes de confirmar. Espelha o protótipo em
@@ -43,7 +44,7 @@ public struct ReviewPaymentView: View {
             }
             .padding(20)
         }
-        .background(PixTheme.background)
+        .background(DSColor.background)
         .navigationTitle("Pix")
         .navigationBarTitleDisplayMode(.inline)
     }
@@ -54,10 +55,11 @@ public struct ReviewPaymentView: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(recipient.name)
-                    .font(.body.weight(.semibold))
+                    .dsFont(DSFont.body)
+                    .fontWeight(.semibold)
                 Text("\(recipient.bankName) · \(recipient.keyMasked)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .dsFont(DSFont.callout)
+                    .foregroundStyle(DSColor.textSecondary)
             }
 
             Spacer()
@@ -66,29 +68,31 @@ public struct ReviewPaymentView: View {
                 viewModel.changeRecipient()
                 onChangeRecipient()
             }
-            .font(.subheadline.weight(.semibold))
+            .dsFont(DSFont.callout)
+            .fontWeight(.semibold)
+            .foregroundStyle(DSColor.accent)
             .frame(minHeight: PixTheme.minimumTapTarget)
             .accessibilityHint("Volta para a tela de seleção de destinatário")
         }
         .padding(16)
-        .background(PixTheme.secondaryBackground)
+        .background(DSColor.surface)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     private var amountSection: some View {
         VStack(alignment: .leading, spacing: 8) {
             Text("Quanto você quer enviar?")
-                .font(.title3.weight(.semibold))
+                .dsFont(DSFont.title)
                 .accessibilityAddTraits(.isHeader)
 
             Text(viewModel.formattedAmount)
-                .font(.system(size: 44, weight: .bold, design: .rounded))
+                .dsFont(DSFont.displayValue)
                 .accessibilityLabel("Valor: \(viewModel.formattedAmount)")
 
             if let accountBalance = viewModel.accountBalance {
                 Text("Saldo em conta: \(viewModel.formattedBalance)")
-                    .font(.subheadline)
-                    .foregroundStyle(.secondary)
+                    .dsFont(DSFont.callout)
+                    .foregroundStyle(DSColor.textSecondary)
                     .accessibilityLabel("Saldo em conta: \(viewModel.formattedBalance)")
                     .accessibilityHidden(false)
                     .id(accountBalance.sourceAccountLabel)
@@ -107,41 +111,30 @@ public struct ReviewPaymentView: View {
             PixDetailRow(
                 label: "Mensagem",
                 value: viewModel.message.isEmpty ? "Adicionar" : viewModel.message,
-                valueColor: viewModel.message.isEmpty ? PixTheme.primary : .primary,
+                valueColor: viewModel.message.isEmpty ? DSColor.accent : DSColor.textPrimary,
                 valueWeight: viewModel.message.isEmpty ? .medium : .regular
             )
         }
-        .background(PixTheme.secondaryBackground)
+        .background(DSColor.surface)
         .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 
     private var confirmButton: some View {
-        Button {
+        PrimaryButton(
+            "Transferir \(viewModel.formattedAmount)",
+            accessibilityLabel: "Transferir \(viewModel.formattedAmount)",
+            accessibilityHint: viewModel.canConfirmTransfer
+                ? "Confirma a transferência de \(viewModel.formattedAmount)"
+                : "Informe um valor válido para habilitar",
+            isLoading: viewModel.isLoading,
+            isEnabled: viewModel.canConfirmTransfer
+        ) {
             Task {
                 let didSubmit = await viewModel.confirmTransfer()
                 if didSubmit {
                     onTransferConfirmed()
                 }
             }
-        } label: {
-            HStack {
-                if viewModel.isLoading {
-                    ProgressView()
-                        .tint(.white)
-                }
-                Text("Transferir \(viewModel.formattedAmount)")
-                    .font(.body.weight(.semibold))
-            }
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: PixTheme.minimumTapTarget)
         }
-        .buttonStyle(.borderedProminent)
-        .tint(PixTheme.primary)
-        .disabled(!viewModel.canConfirmTransfer || viewModel.isLoading)
-        .accessibilityHint(
-            viewModel.canConfirmTransfer
-                ? "Confirma a transferência de \(viewModel.formattedAmount)"
-                : "Informe um valor válido para habilitar"
-        )
     }
 }

@@ -1,4 +1,5 @@
 import SwiftUI
+import SuperAppDesignSystem
 
 /// Tela 1 de 3 — "Para quem você vai enviar?"
 /// Espelha o protótipo em design/images/pix-depois.png (tela 1).
@@ -15,7 +16,7 @@ public struct SelectRecipientView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 Text("Para quem você vai enviar?")
-                    .font(.largeTitle.bold())
+                    .dsFont(DSFont.largeTitle)
                     .accessibilityAddTraits(.isHeader)
 
                 searchField
@@ -28,12 +29,12 @@ public struct SelectRecipientView: View {
                 recentsSection
 
                 Text("O tipo de chave é identificado automaticamente.")
-                    .font(.footnote)
-                    .foregroundStyle(.secondary)
+                    .dsFont(DSFont.footnote)
+                    .foregroundStyle(DSColor.textSecondary)
             }
             .padding(20)
         }
-        .background(PixTheme.background)
+        .background(DSColor.background)
         .navigationTitle("Pix")
         .navigationBarTitleDisplayMode(.inline)
         .task {
@@ -62,7 +63,7 @@ public struct SelectRecipientView: View {
         .frame(minHeight: PixTheme.minimumTapTarget)
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(PixTheme.primary, lineWidth: 1.5)
+                .stroke(DSColor.primary, lineWidth: 1.5)
         )
     }
 
@@ -71,22 +72,23 @@ public struct SelectRecipientView: View {
             // Fora do escopo deste scaffold: leitura de área de transferência / QR code.
         } label: {
             Label(title, systemImage: systemImage)
-                .font(.body.weight(.medium))
+                .dsFont(DSFont.bodyEmphasized)
                 .frame(maxWidth: .infinity)
                 .frame(minHeight: PixTheme.minimumTapTarget)
         }
         .buttonStyle(.plain)
         .overlay(
             RoundedRectangle(cornerRadius: 16, style: .continuous)
-                .stroke(PixTheme.separator, lineWidth: 1)
+                .stroke(DSColor.separator, lineWidth: 1)
         )
     }
 
     private var recentsSection: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("RECENTES")
-                .font(.caption.weight(.semibold))
-                .foregroundStyle(.secondary)
+                .dsFont(DSFont.caption)
+                .fontWeight(.semibold)
+                .foregroundStyle(DSColor.textSecondary)
                 .accessibilityAddTraits(.isHeader)
 
             if viewModel.isLoading && viewModel.recentRecipients.isEmpty {
@@ -109,7 +111,7 @@ public struct SelectRecipientView: View {
                         }
                     }
                 }
-                .background(PixTheme.secondaryBackground)
+                .background(DSColor.surface)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
         }
@@ -125,11 +127,12 @@ private struct RecipientRow: View {
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(recipient.name)
-                    .font(.body.weight(.semibold))
+                    .dsFont(DSFont.body)
+                    .fontWeight(.semibold)
                 if let lastTransactionLabel = recipient.lastTransactionLabel {
                     Text("\(recipient.bankName) · \(lastTransactionLabel)")
-                        .font(.subheadline)
-                        .foregroundStyle(.secondary)
+                        .dsFont(DSFont.callout)
+                        .foregroundStyle(DSColor.textSecondary)
                 }
             }
 

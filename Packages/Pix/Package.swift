@@ -10,12 +10,16 @@ let package = Package(
         .library(name: "Pix", targets: ["Pix"])
     ],
     dependencies: [
-        .package(path: "../Core")
+        .package(path: "../Core"),
+        .package(path: "../../../superapp-design-system")
     ],
     targets: [
         .target(
             name: "Pix",
-            dependencies: ["Core"],
+            dependencies: [
+                "Core",
+                .product(name: "SuperAppDesignSystem", package: "superapp-design-system")
+            ],
             path: "Sources/Pix"
         ),
         .testTarget(

@@ -1,5 +1,6 @@
 import SwiftUI
 import Core
+import SuperAppDesignSystem
 
 /// Tela 3 de 3 — feedback de sucesso ou erro após a confirmação. Espelha o
 /// protótipo em design/images/pix-depois.png (tela 3, fundo azul de sucesso).
@@ -37,22 +38,24 @@ public struct ConfirmationView: View {
                 VStack(spacing: 16) {
                     Image(systemName: "checkmark.circle.fill")
                         .font(.system(size: 56))
-                        .foregroundStyle(.white)
+                        .foregroundStyle(DSColor.textOnPrimary)
                         .accessibilityHidden(true)
 
                     Text("Pix enviado")
-                        .font(.title3.weight(.medium))
+                        .dsFont(DSFont.title)
+                        .fontWeight(.medium)
                         .foregroundStyle(.white.opacity(0.9))
 
                     Text(CurrencyFormatter.string(from: receipt.amount))
-                        .font(.system(size: 44, weight: .bold, design: .rounded))
-                        .foregroundStyle(.white)
+                        .dsFont(DSFont.displayValue)
+                        .foregroundStyle(DSColor.textOnPrimary)
 
                     VStack(spacing: 4) {
                         Text("para \(receipt.recipient.name)")
-                            .font(.body.weight(.semibold))
+                            .dsFont(DSFont.body)
+                            .fontWeight(.semibold)
                         Text(receipt.dateLabel)
-                            .font(.subheadline)
+                            .dsFont(DSFont.callout)
                     }
                     .foregroundStyle(.white.opacity(0.9))
                 }
@@ -62,11 +65,11 @@ public struct ConfirmationView: View {
                 )
 
                 VStack(spacing: 0) {
-                    PixDetailRow(label: "Banco", value: receipt.bankName, labelColor: .white.opacity(0.7), valueColor: .white)
+                    PixDetailRow(label: "Banco", value: receipt.bankName, labelColor: .white.opacity(0.7), valueColor: DSColor.textOnPrimary)
                     Divider().overlay(.white.opacity(0.2))
-                    PixDetailRow(label: "De", value: receipt.sourceAccountLabel, labelColor: .white.opacity(0.7), valueColor: .white)
+                    PixDetailRow(label: "De", value: receipt.sourceAccountLabel, labelColor: .white.opacity(0.7), valueColor: DSColor.textOnPrimary)
                     Divider().overlay(.white.opacity(0.2))
-                    PixDetailRow(label: "ID", value: receipt.transactionId, labelColor: .white.opacity(0.7), valueColor: .white)
+                    PixDetailRow(label: "ID", value: receipt.transactionId, labelColor: .white.opacity(0.7), valueColor: DSColor.textOnPrimary)
                 }
                 .background(.white.opacity(0.08))
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
@@ -76,8 +79,9 @@ public struct ConfirmationView: View {
                         // Fora do escopo deste scaffold: compartilhamento de comprovante.
                     } label: {
                         Text("Compartilhar comprovante")
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(PixTheme.primary)
+                            .dsFont(DSFont.body)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(DSColor.primary)
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: PixTheme.minimumTapTarget)
                     }
@@ -88,8 +92,9 @@ public struct ConfirmationView: View {
                         onFinish()
                     } label: {
                         Text("Voltar ao início")
-                            .font(.body.weight(.semibold))
-                            .foregroundStyle(.white)
+                            .dsFont(DSFont.body)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(DSColor.textOnPrimary)
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: PixTheme.minimumTapTarget)
                     }
@@ -101,8 +106,9 @@ public struct ConfirmationView: View {
                     Button("Repetir para \(receipt.recipient.name)") {
                         onRepeat()
                     }
-                    .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.white)
+                    .dsFont(DSFont.callout)
+                    .fontWeight(.medium)
+                    .foregroundStyle(DSColor.textOnPrimary)
                     .frame(minHeight: PixTheme.minimumTapTarget)
                 }
             }
@@ -110,8 +116,8 @@ public struct ConfirmationView: View {
             .padding(.top, 24)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PixTheme.primary)
-        .foregroundStyle(.white)
+        .background(DSColor.primary)
+        .foregroundStyle(DSColor.textOnPrimary)
     }
 
     // MARK: - Erro
@@ -124,26 +130,22 @@ public struct ConfirmationView: View {
                 .accessibilityHidden(true)
 
             Text("Não foi possível enviar o Pix")
-                .font(.title3.weight(.semibold))
+                .dsFont(DSFont.title)
                 .accessibilityAddTraits(.isHeader)
 
             if let errorMessage = viewModel.errorMessage {
                 Text(errorMessage)
-                    .font(.body)
-                    .foregroundStyle(.secondary)
+                    .dsFont(DSFont.body)
+                    .foregroundStyle(DSColor.textSecondary)
                     .multilineTextAlignment(.center)
             }
 
-            Button {
+            PrimaryButton(
+                "Tentar novamente",
+                accessibilityHint: "Tenta enviar o Pix novamente"
+            ) {
                 Task { await viewModel.confirmTransfer() }
-            } label: {
-                Text("Tentar novamente")
-                    .font(.body.weight(.semibold))
-                    .frame(maxWidth: .infinity)
-                    .frame(minHeight: PixTheme.minimumTapTarget)
             }
-            .buttonStyle(.borderedProminent)
-            .tint(PixTheme.primary)
 
             Button("Voltar ao início") {
                 onFinish()
@@ -152,7 +154,7 @@ public struct ConfirmationView: View {
         }
         .padding(32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(PixTheme.background)
+        .background(DSColor.background)
         .accessibilityElement(children: .contain)
     }
 }

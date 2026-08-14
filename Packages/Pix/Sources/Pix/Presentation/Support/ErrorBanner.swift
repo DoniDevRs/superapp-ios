@@ -1,4 +1,5 @@
 import SwiftUI
+import SuperAppDesignSystem
 
 /// Banner de erro reutilizado pelas telas do fluxo. Erros nunca são
 /// comunicados apenas por cor (WCAG 2.1 AA) — sempre com ícone + texto, e o
@@ -11,7 +12,8 @@ struct ErrorBanner: View {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(PixTheme.error)
             Text(message)
-                .font(.subheadline.weight(.medium))
+                .dsFont(DSFont.callout)
+                .fontWeight(.medium)
                 .foregroundStyle(PixTheme.error)
                 .fixedSize(horizontal: false, vertical: true)
         }
