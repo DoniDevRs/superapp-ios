@@ -46,6 +46,11 @@ public struct SelectRecipientView: View {
                     .padding(.horizontal, 20)
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding(.top, 8)
+                    // Overlays entram por último na ordem de leitura padrão do
+                    // VoiceOver, mesmo aparecendo visualmente no topo — sem
+                    // isso, o erro só seria anunciado depois de toda a lista
+                    // de recentes.
+                    .accessibilitySortPriority(1)
             }
         }
     }
@@ -54,11 +59,15 @@ public struct SelectRecipientView: View {
         HStack(spacing: 8) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.secondary)
-            TextField("Nome, CPF, celular ou chave", text: $viewModel.searchQuery)
+                .accessibilityHidden(true)
+            TextField("Nome, CPF, celular ou chave", text: $viewModel.searchQuery, axis: .vertical)
+                .dsFont(DSFont.body)
+                .lineLimit(1...3)
                 .textInputAutocapitalization(.never)
                 .disableAutocorrection(true)
                 .accessibilityLabel("Nome, CPF, celular ou chave Pix")
         }
+        .padding(.vertical, 12)
         .padding(.horizontal, 16)
         .frame(minHeight: PixTheme.minimumTapTarget)
         .overlay(
@@ -140,6 +149,7 @@ private struct RecipientRow: View {
 
             Image(systemName: "chevron.right")
                 .foregroundStyle(.tertiary)
+                .accessibilityHidden(true)
         }
         .padding(16)
         .frame(minHeight: PixTheme.minimumTapTarget)

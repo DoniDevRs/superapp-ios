@@ -51,16 +51,26 @@ public struct ReviewPaymentView: View {
 
     private func recipientCard(_ recipient: PixRecipient) -> some View {
         HStack(spacing: 12) {
-            RecipientAvatarView(initials: recipient.initials)
+            // Agrupado num único elemento de acessibilidade — sem isso, o
+            // texto oculto das iniciais dentro de `RecipientAvatarView`
+            // (redundante com o nome ao lado) fica "solto" na árvore e é
+            // sinalizado pela auditoria como texto potencialmente não
+            // exposto (achado de 2026-08-14). O botão "Trocar destinatário"
+            // fica de fora do combine, como elemento irmão independente,
+            // para não perder a interatividade no VoiceOver.
+            HStack(spacing: 12) {
+                RecipientAvatarView(initials: recipient.initials)
 
-            VStack(alignment: .leading, spacing: 2) {
-                Text(recipient.name)
-                    .dsFont(DSFont.body)
-                    .fontWeight(.semibold)
-                Text("\(recipient.bankName) · \(recipient.keyMasked)")
-                    .dsFont(DSFont.callout)
-                    .foregroundStyle(DSColor.textSecondary)
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(recipient.name)
+                        .dsFont(DSFont.body)
+                        .fontWeight(.semibold)
+                    Text("\(recipient.bankName) · \(recipient.keyMasked)")
+                        .dsFont(DSFont.callout)
+                        .foregroundStyle(DSColor.textSecondary)
+                }
             }
+            .accessibilityElement(children: .combine)
 
             Spacer()
 
@@ -71,7 +81,12 @@ public struct ReviewPaymentView: View {
             .dsFont(DSFont.callout)
             .fontWeight(.semibold)
             .foregroundStyle(DSColor.accent)
-            .frame(minHeight: PixTheme.minimumTapTarget)
+            .frame(minWidth: PixTheme.minimumTapTarget, minHeight: PixTheme.minimumTapTarget)
+            // `.frame()` sozinho não expande a área de toque real de um
+            // Button com estilo padrão — só o `.contentShape` faz isso
+            // (achado "Hit area is too small" da auditoria de 2026-08-14).
+            .contentShape(Rectangle())
+            .accessibilityLabel("Trocar destinatário")
             .accessibilityHint("Volta para a tela de seleção de destinatário")
         }
         .padding(16)

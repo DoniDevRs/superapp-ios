@@ -21,7 +21,7 @@ final class SuperAppUITests: XCTestCase {
 
         recipientRow.tap()
 
-        let changeRecipientButton = app.buttons["Trocar"]
+        let changeRecipientButton = app.buttons["Trocar destinatário"]
         XCTAssertTrue(
             changeRecipientButton.waitForExistence(timeout: 5),
             "Tocar no destinatário não navegou para ReviewPaymentView (botão \"Trocar\" nunca apareceu)."
@@ -49,7 +49,7 @@ final class SuperAppUITests: XCTestCase {
 
             recipientRow.tap()
 
-            let changeRecipientButton = app.buttons["Trocar"]
+            let changeRecipientButton = app.buttons["Trocar destinatário"]
             XCTAssertTrue(
                 changeRecipientButton.waitForExistence(timeout: 5),
                 "Tocar em \"\(accessibilityLabel)\" não navegou para ReviewPaymentView."

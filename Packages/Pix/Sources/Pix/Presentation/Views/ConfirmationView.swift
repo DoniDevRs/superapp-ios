@@ -9,6 +9,11 @@ public struct ConfirmationView: View {
     private let onFinish: () -> Void
     private let onRepeat: () -> Void
 
+    /// Escala com o Dynamic Type do usuário — um `.font(.system(size:))` fixo
+    /// não acompanharia tamanhos de fonte de acessibilidade (achado da
+    /// auditoria de 2026-08-14).
+    @ScaledMetric(relativeTo: .largeTitle) private var statusIconSize: CGFloat = 56
+
     public init(
         viewModel: PixViewModel,
         onFinish: @escaping () -> Void,
@@ -37,7 +42,7 @@ public struct ConfirmationView: View {
             VStack(spacing: 24) {
                 VStack(spacing: 16) {
                     Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 56))
+                        .font(.system(size: statusIconSize))
                         .foregroundStyle(DSColor.textOnPrimary)
                         .accessibilityHidden(true)
 
@@ -85,6 +90,7 @@ public struct ConfirmationView: View {
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: PixTheme.minimumTapTarget)
                     }
+                    .contentShape(Rectangle())
                     .background(.white)
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
 
@@ -98,6 +104,7 @@ public struct ConfirmationView: View {
                             .frame(maxWidth: .infinity)
                             .frame(minHeight: PixTheme.minimumTapTarget)
                     }
+                    .contentShape(Rectangle())
                     .overlay(
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .stroke(.white.opacity(0.6), lineWidth: 1.5)
@@ -110,6 +117,7 @@ public struct ConfirmationView: View {
                     .fontWeight(.medium)
                     .foregroundStyle(DSColor.textOnPrimary)
                     .frame(minHeight: PixTheme.minimumTapTarget)
+                    .contentShape(Rectangle())
                 }
             }
             .padding(24)
@@ -125,7 +133,7 @@ public struct ConfirmationView: View {
     private var errorContent: some View {
         VStack(spacing: 20) {
             Image(systemName: "xmark.circle.fill")
-                .font(.system(size: 56))
+                .font(.system(size: statusIconSize))
                 .foregroundStyle(PixTheme.error)
                 .accessibilityHidden(true)
 
@@ -151,6 +159,7 @@ public struct ConfirmationView: View {
                 onFinish()
             }
             .frame(minHeight: PixTheme.minimumTapTarget)
+            .contentShape(Rectangle())
         }
         .padding(32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

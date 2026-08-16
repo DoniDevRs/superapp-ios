@@ -11,6 +11,7 @@ struct ErrorBanner: View {
         HStack(alignment: .top, spacing: 10) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .foregroundStyle(PixTheme.error)
+                .accessibilityHidden(true)
             Text(message)
                 .dsFont(DSFont.callout)
                 .fontWeight(.medium)

@@ -14,6 +14,7 @@
 		0F8C913D090C6E4A8DE197CA /* Core in Frameworks */ = {isa = PBXBuildFile; productRef = A836B8984E14703D7D77464B /* Core */; };
 		A0B86D20A47E5EE05625352D /* Pix in Frameworks */ = {isa = PBXBuildFile; productRef = 09E056165A0062E08C957F9B /* Pix */; };
 		060B8134C5B163A55755D782 /* SuperAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 370D5FEBD000B68BBF99598F /* SuperAppUITests.swift */; };
+		A9854C8796E9C7BF2ECB5EAF /* AccessibilityAuditUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F45CEED9E16BE741296B937C /* AccessibilityAuditUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -23,6 +24,7 @@
 		CD17AB2CD4CDECCA438A4F8A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BC226FF7F429D3500584F9E0 /* SuperApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SuperApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		370D5FEBD000B68BBF99598F /* SuperAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperAppUITests.swift; sourceTree = "<group>"; };
+		F45CEED9E16BE741296B937C /* AccessibilityAuditUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccessibilityAuditUITests.swift; sourceTree = "<group>"; };
 		5001263561FFBC442937EEA4 /* SuperAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SuperAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				370D5FEBD000B68BBF99598F /* SuperAppUITests.swift */,
+				F45CEED9E16BE741296B937C /* AccessibilityAuditUITests.swift */,
 			);
 			path = SuperAppUITests;
 			sourceTree = "<group>";
@@ -221,6 +224,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				060B8134C5B163A55755D782 /* SuperAppUITests.swift in Sources */,
+				A9854C8796E9C7BF2ECB5EAF /* AccessibilityAuditUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
