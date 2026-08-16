@@ -1,16 +1,16 @@
 import UIKit
 
-/// Composition root do módulo Pix.
+/// Composition root of the Pix module.
 ///
-/// Monta o `PixCoordinator` com todas as suas dependências (Use Cases sobre
-/// o repositório mockado — ver `MockPixRepository`), para que o módulo App
-/// só precise conhecer este ponto de entrada único (ver plan.md: "App —
-/// registrar o PixTransferCoordinator e suas dependências no composition
-/// root/DI").
+/// Builds the `PixCoordinator` with all of its dependencies (Use Cases on
+/// top of the mocked repository — see `MockPixRepository`), so that the App
+/// module only needs to know this single entry point (see plan.md: "App —
+/// register the PixTransferCoordinator and its dependencies in the
+/// composition root/DI").
 ///
-/// Quando a integração com a API Java estiver pronta, apenas o repositório
-/// injetado aqui muda (de `MockPixRepository` para um `PixRepositoryImpl`
-/// que usa `Core.NetworkClient`) — nada no restante da feature precisa mudar.
+/// Once the integration with the Java API is ready, only the repository
+/// injected here changes (from `MockPixRepository` to a `PixRepositoryImpl`
+/// that uses `Core.NetworkClient`) — nothing else in the feature needs to change.
 public enum PixModule {
     @MainActor
     public static func makeCoordinator(navigationController: UINavigationController) -> PixCoordinator {

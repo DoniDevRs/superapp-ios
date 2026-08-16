@@ -2,20 +2,20 @@ import UIKit
 import SwiftUI
 import Core
 
-/// Coordinator (UIKit) do fluxo de Transferência via Pix.
+/// Coordinator (UIKit) for the Pix Transfer flow.
 ///
-/// Orquestra a navegação entre as 3 telas do fluxo — `SelectRecipientView`,
-/// `ReviewPaymentView` e `ConfirmationView` — cada uma envolvida em um
-/// `UIHostingController`. Nenhuma das Views/ViewModels navega diretamente:
-/// elas comunicam intenção via closures, e é este tipo que decide para onde
-/// ir (regra do CLAUDE.md: "Nunca criar navegação fora do Coordinator").
+/// Orchestrates navigation between the flow's 3 screens — `SelectRecipientView`,
+/// `ReviewPaymentView`, and `ConfirmationView` — each wrapped in a
+/// `UIHostingController`. None of the Views/ViewModels navigate directly:
+/// they communicate intent via closures, and this type decides where to
+/// go (CLAUDE.md rule: "Never create navigation outside the Coordinator").
 public final class PixCoordinator: Coordinator {
     public let navigationController: UINavigationController
     public var childCoordinators: [Coordinator] = []
 
-    /// Chamado quando o fluxo termina (usuário volta ao início após sucesso
-    /// ou erro), para que o coordinator pai possa reagir — ex.: remover este
-    /// coordinator da lista de filhos, voltar para a home do super-app.
+    /// Called when the flow ends (user returns to the start after success
+    /// or error), so the parent coordinator can react — e.g., remove this
+    /// coordinator from the children list, return to the super-app's home.
     public var onFinish: (() -> Void)?
 
     private let viewModel: PixViewModel
@@ -29,7 +29,7 @@ public final class PixCoordinator: Coordinator {
         showSelectRecipient()
     }
 
-    // MARK: - Telas
+    // MARK: - Screens
 
     private func showSelectRecipient() {
         let view = SelectRecipientView(viewModel: viewModel) { [weak self] in
@@ -64,18 +64,18 @@ public final class PixCoordinator: Coordinator {
             }
         )
         let hosting = UIHostingController(rootView: view)
-        // A saída desta tela deve sempre passar por "Voltar ao início" ou
-        // "Repetir", que resetam o estado do PixViewModel — desabilita o
-        // gesto de swipe-back para que o usuário não contorne o Coordinator
-        // e deixe a tela de revisão com o comprovante/erro obsoleto.
+        // Exiting this screen must always go through "Voltar ao início" or
+        // "Repetir", which reset the PixViewModel's state — disable the
+        // swipe-back gesture so the user can't bypass the Coordinator and
+        // leave the review screen with a stale receipt/error.
         navigationController.interactivePopGestureRecognizer?.isEnabled = false
         navigationController.pushViewController(hosting, animated: true)
     }
 
-    // MARK: - Transições de estado
+    // MARK: - State transitions
 
-    /// "Repetir para {nome}" — mantém o destinatário, limpa valor/mensagem e
-    /// volta para a tela de valor/revisão (já presente na pilha).
+    /// "Repetir para {nome}" — keeps the recipient, clears amount/message,
+    /// and returns to the amount/review screen (already on the stack).
     private func repeatTransfer() {
         guard let recipient = viewModel.receipt?.recipient else { return }
         viewModel.startNewTransfer(keepingRecipient: recipient)
@@ -83,8 +83,8 @@ public final class PixCoordinator: Coordinator {
         navigationController.popViewController(animated: true)
     }
 
-    /// "Voltar ao início" — reseta o fluxo por completo e volta para a
-    /// primeira tela, notificando o coordinator pai.
+    /// "Voltar ao início" — fully resets the flow and returns to the
+    /// first screen, notifying the parent coordinator.
     private func finish() {
         viewModel.resetFlow()
         navigationController.interactivePopGestureRecognizer?.isEnabled = true

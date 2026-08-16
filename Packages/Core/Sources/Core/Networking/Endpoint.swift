@@ -1,9 +1,9 @@
 import Foundation
 
-/// Descrição declarativa de uma chamada HTTP, independente de qualquer
-/// feature. Módulos de feature (ex.: Pix) constroem `Endpoint`s e usam o
-/// `NetworkClient` do Core para executá-los — nenhuma feature deve falar
-/// com `URLSession` diretamente.
+/// Declarative description of an HTTP call, independent of any feature.
+/// Feature modules (e.g., Pix) build `Endpoint`s and use Core's
+/// `NetworkClient` to execute them — no feature should talk to `URLSession`
+/// directly.
 public struct Endpoint {
     public enum Method: String {
         case get = "GET"

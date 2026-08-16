@@ -1,10 +1,10 @@
 import SwiftUI
 import SuperAppDesignSystem
 
-/// Linha "rótulo à esquerda / valor à direita", reutilizada pela tela de
-/// revisão (fundo claro, ex.: "De", "Quando", "Tarifa") e pela tela de
-/// confirmação (fundo azul de sucesso, ex.: "Banco", "ID") — evita duplicar
-/// layout e acessibilidade entre as duas telas.
+/// "Label on the left / value on the right" row, reused by the review
+/// screen (light background, e.g., "De", "Quando", "Tarifa") and by the
+/// confirmation screen (blue success background, e.g., "Banco", "ID") —
+/// avoids duplicating layout and accessibility between the two screens.
 struct PixDetailRow: View {
     let label: String
     let value: String

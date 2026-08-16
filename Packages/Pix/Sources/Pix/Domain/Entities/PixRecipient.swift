@@ -1,15 +1,15 @@
 import Foundation
 
-/// Um destinatário de Pix, salvo (recente) ou resolvido a partir de uma
-/// chave digitada manualmente.
+/// A Pix recipient, either saved (recent) or resolved from a manually
+/// typed key.
 public struct PixRecipient: Identifiable, Equatable {
     public let id: String
     public let name: String
     public let initials: String
     public let bankName: String
     public let keyMasked: String
-    /// Rótulo de "última transação" exibido na lista de recentes (ex.: "ontem").
-    /// `nil` para destinatários resolvidos por chave digitada na hora.
+    /// "Last transaction" label shown in the recents list (e.g., "ontem").
+    /// `nil` for recipients resolved by a key typed on the spot.
     public let lastTransactionLabel: String?
 
     public init(

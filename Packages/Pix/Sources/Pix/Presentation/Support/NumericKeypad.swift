@@ -1,8 +1,8 @@
 import SwiftUI
 import SuperAppDesignSystem
 
-/// Teclado numérico usado na tela de valor, com alvos de toque ≥48pt
-/// (ver anotação do protótipo) e suporte a Dynamic Type nos rótulos.
+/// Numeric keypad used on the amount screen, with ≥48pt tap targets
+/// (see prototype annotation) and Dynamic Type support on the labels.
 struct NumericKeypad: View {
     let onDigit: (String) -> Void
     let onDelete: () -> Void

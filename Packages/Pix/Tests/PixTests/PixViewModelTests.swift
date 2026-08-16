@@ -47,13 +47,13 @@ final class PixViewModelTests: XCTestCase {
 
         await sut.loadInitialData()
 
-        // Hoje só `PixRepositoryImpl` real mapeará `Core.NetworkError` para
-        // `PixError` — até lá, qualquer erro não reconhecido cai no fallback
-        // genérico. Este teste documenta esse comportamento.
+        // Today only the real `PixRepositoryImpl` will map `Core.NetworkError`
+        // to `PixError` — until then, any unrecognized error falls back to
+        // the generic message. This test documents that behavior.
         XCTAssertEqual(sut.errorMessage, PixError.unknown.errorDescription)
     }
 
-    // MARK: - Busca de destinatários (filteredRecipients)
+    // MARK: - Recipient search (filteredRecipients)
 
     func test_filteredRecipients_withEmptyQuery_returnsAllRecipients() async {
         let repository = PixRepositoryStub()
@@ -104,7 +104,7 @@ final class PixViewModelTests: XCTestCase {
         XCTAssertTrue(sut.filteredRecipients.isEmpty)
     }
 
-    // MARK: - Seleção de destinatário
+    // MARK: - Recipient selection
 
     func test_selectRecipient_setsSelectedRecipientAndClearsError() {
         let sut = makeSUT()
@@ -130,8 +130,8 @@ final class PixViewModelTests: XCTestCase {
     }
 
     func test_selectRecipient_whenPreviousAmountAndMessageExist_clearsThemForTheNewRecipient() {
-        // Reproduz o cenário de swipe-back: usuário digitou um valor para um
-        // destinatário, voltou sem tocar em "Trocar" e selecionou outro.
+        // Reproduces the swipe-back scenario: the user typed an amount for a
+        // recipient, went back without tapping "Trocar", and selected another.
         let sut = makeSUT()
         sut.selectRecipient(.stub(id: "1", name: "Ana Souza"))
         "25000".forEach { sut.appendAmountDigit(String($0)) }
@@ -145,7 +145,7 @@ final class PixViewModelTests: XCTestCase {
         XCTAssertNil(sut.receipt)
     }
 
-    // MARK: - Validação de valor
+    // MARK: - Amount validation
 
     func test_confirmTransfer_withZeroAmount_setsInvalidAmountErrorAndDoesNotSubmit() async {
         let repository = PixRepositoryStub()
@@ -153,7 +153,7 @@ final class PixViewModelTests: XCTestCase {
         let sut = makeSUT(repository: repository)
         await sut.loadInitialData()
         sut.selectRecipient(.stub())
-        // typedAmountDigits vazio -> amount == 0
+        // typedAmountDigits empty -> amount == 0
 
         let didSubmit = await sut.confirmTransfer()
 
@@ -168,7 +168,7 @@ final class PixViewModelTests: XCTestCase {
         let sut = makeSUT(repository: repository)
         await sut.loadInitialData()
         sut.selectRecipient(.stub())
-        "50000".forEach { sut.appendAmountDigit(String($0)) } // R$ 500,00 > saldo de R$ 100,00
+        "50000".forEach { sut.appendAmountDigit(String($0)) } // R$ 500,00 > balance of R$ 100,00
 
         let didSubmit = await sut.confirmTransfer()
 
@@ -178,8 +178,8 @@ final class PixViewModelTests: XCTestCase {
     }
 
     func test_confirmTransfer_withAmountEqualToBalance_submitsSuccessfully() async {
-        // Caso de limite: a regra é "valor > 0 e <= saldo" (plan.md), então
-        // valor == saldo deve ser aceito, não rejeitado.
+        // Boundary case: the rule is "amount > 0 and <= balance" (plan.md), so
+        // amount == balance should be accepted, not rejected.
         let repository = PixRepositoryStub()
         repository.balanceResult = .success(PixAccountBalance(sourceAccountLabel: "Conta corrente ·1234", amount: 100))
         repository.confirmResult = .success(
@@ -195,7 +195,7 @@ final class PixViewModelTests: XCTestCase {
         let sut = makeSUT(repository: repository)
         await sut.loadInitialData()
         sut.selectRecipient(.stub())
-        "10000".forEach { sut.appendAmountDigit(String($0)) } // R$ 100,00 == saldo
+        "10000".forEach { sut.appendAmountDigit(String($0)) } // R$ 100,00 == balance
 
         let didSubmit = await sut.confirmTransfer()
 
@@ -210,7 +210,7 @@ final class PixViewModelTests: XCTestCase {
         let sut = makeSUT(repository: repository)
         await sut.loadInitialData()
         "25000".forEach { sut.appendAmountDigit(String($0)) }
-        // Nenhum destinatário selecionado.
+        // No recipient selected.
 
         let didSubmit = await sut.confirmTransfer()
 
@@ -221,7 +221,7 @@ final class PixViewModelTests: XCTestCase {
     func test_confirmTransfer_withoutLoadedBalance_returnsFalseAndDoesNotCallRepository() async {
         let repository = PixRepositoryStub()
         let sut = makeSUT(repository: repository)
-        // loadInitialData() não foi chamado -> accountBalance == nil.
+        // loadInitialData() was not called -> accountBalance == nil.
         sut.selectRecipient(.stub())
         "25000".forEach { sut.appendAmountDigit(String($0)) }
 
@@ -253,9 +253,9 @@ final class PixViewModelTests: XCTestCase {
         async let second = sut.confirmTransfer()
         let results = await [first, second]
 
-        // Exatamente uma das duas chamadas deve ter sido a que efetivamente
-        // enviou ao repositório — a outra deve ter sido barrada pelo guard
-        // de reentrância (`!isLoading`), nunca as duas ao mesmo tempo.
+        // Exactly one of the two calls should have been the one that
+        // actually submitted to the repository — the other should have been
+        // blocked by the reentrancy guard (`!isLoading`), never both at once.
         XCTAssertEqual(repository.confirmTransferCallCount, 1)
         XCTAssertEqual(results.filter { $0 }.count, 1)
     }
@@ -281,7 +281,7 @@ final class PixViewModelTests: XCTestCase {
         XCTAssertTrue(sut.canConfirmTransfer)
 
         let task = Task { await sut.confirmTransfer() }
-        try? await Task.sleep(nanoseconds: 20_000_000) // 20ms: depois de isLoading=true, antes dos 100ms de "rede"
+        try? await Task.sleep(nanoseconds: 20_000_000) // 20ms: after isLoading=true, before the 100ms of "network"
 
         XCTAssertTrue(sut.isLoading)
         XCTAssertFalse(sut.canConfirmTransfer)
@@ -291,7 +291,7 @@ final class PixViewModelTests: XCTestCase {
         XCTAssertTrue(sut.canConfirmTransfer, "após concluir, deve voltar a permitir uma nova tentativa")
     }
 
-    // MARK: - Confirmação
+    // MARK: - Confirmation
 
     func test_confirmTransfer_whenValidAndRepositorySucceeds_setsReceiptAndReturnsTrue() async {
         let repository = PixRepositoryStub()
@@ -329,14 +329,14 @@ final class PixViewModelTests: XCTestCase {
 
         let didSubmit = await sut.confirmTransfer()
 
-        // O Coordinator ainda deve navegar para a tela de resultado, que
-        // exibe o erro (ver plan.md: tela de Resultado cobre sucesso e erro).
+        // The Coordinator should still navigate to the result screen, which
+        // shows the error (see plan.md: the Result screen covers success and error).
         XCTAssertTrue(didSubmit)
         XCTAssertNil(sut.receipt)
         XCTAssertEqual(sut.errorMessage, PixError.network.errorDescription)
     }
 
-    // MARK: - Repetir / resetar fluxo
+    // MARK: - Repeat / reset flow
 
     func test_startNewTransfer_keepsRecipientButClearsAmountMessageAndReceipt() {
         let sut = makeSUT()

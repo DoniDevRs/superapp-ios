@@ -2,13 +2,13 @@ import UIKit
 import Core
 import Pix
 
-/// Coordinator raiz do app — o composition root de navegação.
+/// Root Coordinator of the app — the navigation composition root.
 ///
-/// Hoje o super-app só tem a jornada de Pix, então o `RootCoordinator` a
-/// inicia diretamente. Em um app com mais jornadas, este seria o lugar para
-/// decidir qual feature abrir (ex.: a partir de uma home/tab bar), sempre
-/// delegando a navegação de cada fluxo ao Coordinator daquele módulo — nunca
-/// navegando "no meio do caminho" fora de um Coordinator.
+/// Today the super-app only has the Pix journey, so `RootCoordinator` starts
+/// it directly. In an app with more journeys, this would be the place to
+/// decide which feature to open (e.g., from a home/tab bar), always
+/// delegating each flow's navigation to that module's Coordinator — never
+/// navigating "midway" outside of a Coordinator.
 @MainActor
 final class RootCoordinator: ObservableObject, Coordinator {
     let navigationController = UINavigationController()

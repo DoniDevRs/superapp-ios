@@ -1,8 +1,8 @@
 import SwiftUI
 import SuperAppDesignSystem
 
-/// Círculo com as iniciais do destinatário, usado na lista de recentes e no
-/// card de revisão.
+/// Circle with the recipient's initials, used in the recents list and on
+/// the review card.
 struct RecipientAvatarView: View {
     let initials: String
     var color: Color = DSColor.primary

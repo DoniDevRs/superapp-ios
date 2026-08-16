@@ -1,7 +1,7 @@
 import Foundation
 
-/// Comprovante de uma transferência Pix concluída com sucesso, exibido na
-/// tela de confirmação.
+/// Receipt for a successfully completed Pix transfer, shown on the
+/// confirmation screen.
 public struct PixTransferReceipt: Equatable {
     public let recipient: PixRecipient
     public let amount: Decimal

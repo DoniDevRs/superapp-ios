@@ -1,6 +1,6 @@
 import Foundation
 
-/// Saldo disponível na conta de origem usada para a transferência.
+/// Available balance in the source account used for the transfer.
 public struct PixAccountBalance: Equatable {
     public let sourceAccountLabel: String
     public let amount: Decimal

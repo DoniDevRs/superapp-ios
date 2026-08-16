@@ -2,16 +2,16 @@ import SwiftUI
 import Core
 import SuperAppDesignSystem
 
-/// Tela 3 de 3 — feedback de sucesso ou erro após a confirmação. Espelha o
-/// protótipo em design/images/pix-depois.png (tela 3, fundo azul de sucesso).
+/// Screen 3 of 3 — success or error feedback after confirmation. Mirrors the
+/// prototype in design/images/pix-depois.png (screen 3, blue success background).
 public struct ConfirmationView: View {
     @ObservedObject private var viewModel: PixViewModel
     private let onFinish: () -> Void
     private let onRepeat: () -> Void
 
-    /// Escala com o Dynamic Type do usuário — um `.font(.system(size:))` fixo
-    /// não acompanharia tamanhos de fonte de acessibilidade (achado da
-    /// auditoria de 2026-08-14).
+    /// Scales with the user's Dynamic Type — a fixed `.font(.system(size:))`
+    /// wouldn't track accessibility font sizes (finding from the
+    /// 2026-08-14 audit).
     @ScaledMetric(relativeTo: .largeTitle) private var statusIconSize: CGFloat = 56
 
     public init(
@@ -35,7 +35,7 @@ public struct ConfirmationView: View {
         .navigationBarBackButtonHidden(true)
     }
 
-    // MARK: - Sucesso
+    // MARK: - Success
 
     private func successContent(_ receipt: PixTransferReceipt) -> some View {
         ScrollView {
@@ -81,7 +81,7 @@ public struct ConfirmationView: View {
 
                 VStack(spacing: 12) {
                     Button {
-                        // Fora do escopo deste scaffold: compartilhamento de comprovante.
+                        // Out of scope for this scaffold: sharing the receipt.
                     } label: {
                         Text("Compartilhar comprovante")
                             .dsFont(DSFont.body)
@@ -128,7 +128,7 @@ public struct ConfirmationView: View {
         .foregroundStyle(DSColor.textOnPrimary)
     }
 
-    // MARK: - Erro
+    // MARK: - Error
 
     private var errorContent: some View {
         VStack(spacing: 20) {

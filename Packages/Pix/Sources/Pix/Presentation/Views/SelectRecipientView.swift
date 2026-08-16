@@ -1,8 +1,8 @@
 import SwiftUI
 import SuperAppDesignSystem
 
-/// Tela 1 de 3 — "Para quem você vai enviar?"
-/// Espelha o protótipo em design/images/pix-depois.png (tela 1).
+/// Screen 1 of 3 — "Para quem você vai enviar?"
+/// Mirrors the prototype in design/images/pix-depois.png (screen 1).
 public struct SelectRecipientView: View {
     @ObservedObject private var viewModel: PixViewModel
     private let onRecipientSelected: () -> Void
@@ -46,10 +46,10 @@ public struct SelectRecipientView: View {
                     .padding(.horizontal, 20)
                     .frame(maxHeight: .infinity, alignment: .top)
                     .padding(.top, 8)
-                    // Overlays entram por último na ordem de leitura padrão do
-                    // VoiceOver, mesmo aparecendo visualmente no topo — sem
-                    // isso, o erro só seria anunciado depois de toda a lista
-                    // de recentes.
+                    // Overlays come last in VoiceOver's default reading
+                    // order, even though they appear visually at the top —
+                    // without this, the error would only be announced after
+                    // the entire recents list.
                     .accessibilitySortPriority(1)
             }
         }
@@ -78,7 +78,7 @@ public struct SelectRecipientView: View {
 
     private func actionButton(title: String, systemImage: String) -> some View {
         Button {
-            // Fora do escopo deste scaffold: leitura de área de transferência / QR code.
+            // Out of scope for this scaffold: reading the clipboard / QR code.
         } label: {
             Label(title, systemImage: systemImage)
                 .dsFont(DSFont.bodyEmphasized)

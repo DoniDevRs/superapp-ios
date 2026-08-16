@@ -1,9 +1,9 @@
 import SwiftUI
 import SuperAppDesignSystem
 
-/// Banner de erro reutilizado pelas telas do fluxo. Erros nunca são
-/// comunicados apenas por cor (WCAG 2.1 AA) — sempre com ícone + texto, e o
-/// texto é lido de uma vez só pelo VoiceOver via `accessibilityElement`.
+/// Error banner reused across the flow's screens. Errors are never
+/// communicated by color alone (WCAG 2.1 AA) — always with icon + text, and
+/// the text is read as a single unit by VoiceOver via `accessibilityElement`.
 struct ErrorBanner: View {
     let message: String
 

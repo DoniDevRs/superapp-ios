@@ -1,13 +1,13 @@
 import Foundation
 
-/// Implementação mockada de `PixRepository`, usada enquanto a integração
-/// com a API Java (`superapp-api`) não está disponível (ver tasks.md, Fase 0,
-/// item 2 — contratos de API ainda a alinhar com o backend). Os dados aqui
-/// espelham o protótipo em design/images/pix-depois.png.
+/// Mocked implementation of `PixRepository`, used while the integration
+/// with the Java API (`superapp-api`) is not yet available (see tasks.md,
+/// Phase 0, item 2 — API contracts still to be aligned with the backend).
+/// The data here mirrors the prototype in design/images/pix-depois.png.
 ///
-/// Quando os contratos de API forem definidos, esta classe é substituída por
-/// um `PixRepositoryImpl` que usa `Core.NetworkClient` — o restante da
-/// feature (Use Cases, ViewModel, Views, Coordinator) não muda.
+/// Once the API contracts are defined, this class is replaced by a
+/// `PixRepositoryImpl` that uses `Core.NetworkClient` — the rest of the
+/// feature (Use Cases, ViewModel, Views, Coordinator) doesn't change.
 public final class MockPixRepository: PixRepository {
     public init() {}
 

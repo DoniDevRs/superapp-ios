@@ -1,18 +1,18 @@
 import Foundation
 
-/// Contrato mínimo de networking compartilhado entre módulos de feature.
+/// Minimal networking contract shared between feature modules.
 ///
-/// Implementações concretas (ex.: `URLSessionNetworkClient`) vivem no Core e
-/// são injetadas nos repositórios de cada feature (ver plan.md da feature
-/// Pix: "Data ... usando networking do Core"). Isso mantém o Core como a
-/// única fonte de acesso à API Java do backend (`superapp-api`).
+/// Concrete implementations (e.g., `URLSessionNetworkClient`) live in Core
+/// and are injected into each feature's repositories (see the Pix feature's
+/// plan.md: "Data ... using Core's networking"). This keeps Core as the
+/// single source of access to the backend's Java API (`superapp-api`).
 public protocol NetworkClient {
     func request<T: Decodable>(_ endpoint: Endpoint, decoding type: T.Type) async throws -> T
 }
 
-/// Implementação padrão sobre `URLSession`, pronta para quando a feature Pix
-/// (ou qualquer outra) conectar à API real. Não é usada ainda pelo módulo
-/// Pix, que hoje opera 100% com dados mockados.
+/// Default implementation on top of `URLSession`, ready for when the Pix
+/// feature (or any other) connects to the real API. Not yet used by the Pix
+/// module, which today operates 100% on mocked data.
 public final class URLSessionNetworkClient: NetworkClient {
     private let session: URLSession
     private let baseURL: URL

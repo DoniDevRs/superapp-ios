@@ -1,8 +1,8 @@
 import SwiftUI
 import UIKit
 
-/// Ponte entre o SwiftUI `App` lifecycle e a navegação raiz em UIKit
-/// controlada pelo `RootCoordinator`.
+/// Bridge between the SwiftUI `App` lifecycle and the root navigation in UIKit
+/// controlled by `RootCoordinator`.
 struct RootView: UIViewControllerRepresentable {
     let coordinator: RootCoordinator
 
@@ -12,7 +12,7 @@ struct RootView: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UINavigationController, context: Context) {
-        // Toda navegação subsequente é responsabilidade dos Coordinators —
-        // não há estado para sincronizar aqui.
+        // All subsequent navigation is the Coordinators' responsibility —
+        // there is no state to sync here.
     }
 }

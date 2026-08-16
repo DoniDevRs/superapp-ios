@@ -1,9 +1,9 @@
 import Foundation
 
-/// Regra de negócio única para validação de valor de transferência: o valor
-/// deve ser maior que zero e menor ou igual ao saldo disponível (ver
-/// plan.md). Esta é a única fonte de verdade dessa regra — nenhuma outra
-/// camada deve reimplementá-la.
+/// Single business rule for transfer amount validation: the amount must be
+/// greater than zero and less than or equal to the available balance (see
+/// plan.md). This is the single source of truth for this rule — no other
+/// layer should reimplement it.
 public protocol ValidateTransferAmountUseCase {
     func validate(amount: Decimal, balance: Decimal) throws
 }

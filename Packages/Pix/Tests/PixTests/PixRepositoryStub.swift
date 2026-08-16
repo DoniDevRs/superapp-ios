@@ -1,19 +1,19 @@
 import Foundation
 @testable import Pix
 
-/// Dublê de teste para `PixRepository`. Não deve ser confundido com
-/// `MockPixRepository` (em `Sources/Pix/Data`), que é o mock usado em tempo
-/// de execução pelo app enquanto a API real não está disponível — este tipo
-/// existe só para isolar o `PixViewModel` da rede/dados reais nos testes.
+/// Test double for `PixRepository`. Not to be confused with
+/// `MockPixRepository` (in `Sources/Pix/Data`), which is the mock used at
+/// runtime by the app while the real API isn't available — this type
+/// exists only to isolate `PixViewModel` from real network/data in tests.
 final class PixRepositoryStub: PixRepository {
     var recipientsResult: Result<[PixRecipient], Error> = .success([])
     var balanceResult: Result<PixAccountBalance, Error> = .success(
         PixAccountBalance(sourceAccountLabel: "Conta corrente ·1234", amount: 1000)
     )
     var confirmResult: Result<PixTransferReceipt, Error> = .failure(PixError.unknown)
-    /// Atraso artificial antes de resolver `confirmResult`, usado para
-    /// testar comportamento enquanto a chamada está "em voo" (ex.: guard de
-    /// reentrância, `isLoading`/`canConfirmTransfer` durante o envio).
+    /// Artificial delay before resolving `confirmResult`, used to test
+    /// behavior while the call is "in flight" (e.g., reentrancy guard,
+    /// `isLoading`/`canConfirmTransfer` during submission).
     var confirmDelayNanoseconds: UInt64 = 0
 
     private(set) var confirmTransferCallCount = 0

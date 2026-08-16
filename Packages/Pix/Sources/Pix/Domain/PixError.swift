@@ -1,10 +1,9 @@
 import Foundation
 
-/// Erros de domínio da feature Pix. A camada de Data é responsável por
-/// mapear erros de transporte (`Core.NetworkError`) para este tipo — a
-/// Presentation nunca deve enxergar erros de rede diretamente (ver
-/// plan.md: "Tratamento de erros de rede mapeado para tipos de erro de
-/// domínio").
+/// Domain errors for the Pix feature. The Data layer is responsible for
+/// mapping transport errors (`Core.NetworkError`) to this type — Presentation
+/// should never see network errors directly (see plan.md: "Network error
+/// handling mapped to domain error types").
 public enum PixError: Error, LocalizedError, Equatable {
     case invalidAmount
     case insufficientBalance

@@ -1,9 +1,9 @@
 import Foundation
 
-/// Erros de transporte/rede, genéricos o suficiente para qualquer módulo de
-/// feature usar. Camadas de Data devem mapear `NetworkError` para erros de
-/// domínio próprios — a Presentation nunca deve enxergar este tipo
-/// diretamente (ver plan.md da feature Pix).
+/// Transport/network errors, generic enough for any feature module to use.
+/// Data layers must map `NetworkError` to their own domain errors —
+/// Presentation should never see this type directly (see the Pix feature's
+/// plan.md).
 public enum NetworkError: Error, Equatable {
     case invalidURL
     case noConnection

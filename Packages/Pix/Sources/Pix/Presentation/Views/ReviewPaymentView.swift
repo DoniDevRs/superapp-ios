@@ -1,10 +1,10 @@
 import SwiftUI
 import SuperAppDesignSystem
 
-/// Tela 2 de 3 — destinatário selecionado + "Quanto você quer enviar?" +
-/// resumo revisável antes de confirmar. Espelha o protótipo em
-/// design/images/pix-depois.png (tela 2), que junta valor e revisão em uma
-/// única tela.
+/// Screen 2 of 3 — selected recipient + "Quanto você quer enviar?" +
+/// reviewable summary before confirming. Mirrors the prototype in
+/// design/images/pix-depois.png (screen 2), which combines amount and
+/// review into a single screen.
 public struct ReviewPaymentView: View {
     @ObservedObject private var viewModel: PixViewModel
     private let onChangeRecipient: () -> Void
@@ -51,13 +51,13 @@ public struct ReviewPaymentView: View {
 
     private func recipientCard(_ recipient: PixRecipient) -> some View {
         HStack(spacing: 12) {
-            // Agrupado num único elemento de acessibilidade — sem isso, o
-            // texto oculto das iniciais dentro de `RecipientAvatarView`
-            // (redundante com o nome ao lado) fica "solto" na árvore e é
-            // sinalizado pela auditoria como texto potencialmente não
-            // exposto (achado de 2026-08-14). O botão "Trocar destinatário"
-            // fica de fora do combine, como elemento irmão independente,
-            // para não perder a interatividade no VoiceOver.
+            // Grouped into a single accessibility element — without this,
+            // the hidden initials text inside `RecipientAvatarView`
+            // (redundant with the name next to it) is left "loose" in the
+            // tree and gets flagged by the audit as potentially unexposed
+            // text (2026-08-14 finding). The "Trocar destinatário" button
+            // is kept outside the combine, as an independent sibling
+            // element, so as not to lose interactivity in VoiceOver.
             HStack(spacing: 12) {
                 RecipientAvatarView(initials: recipient.initials)
 
@@ -82,9 +82,9 @@ public struct ReviewPaymentView: View {
             .fontWeight(.semibold)
             .foregroundStyle(DSColor.accent)
             .frame(minWidth: PixTheme.minimumTapTarget, minHeight: PixTheme.minimumTapTarget)
-            // `.frame()` sozinho não expande a área de toque real de um
-            // Button com estilo padrão — só o `.contentShape` faz isso
-            // (achado "Hit area is too small" da auditoria de 2026-08-14).
+            // `.frame()` alone doesn't expand a standard-style Button's
+            // real tap area — only `.contentShape` does that ("Hit area
+            // is too small" finding from the 2026-08-14 audit).
             .contentShape(Rectangle())
             .accessibilityLabel("Trocar destinatário")
             .accessibilityHint("Volta para a tela de seleção de destinatário")

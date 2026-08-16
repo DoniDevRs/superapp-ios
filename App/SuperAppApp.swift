@@ -1,7 +1,7 @@
 import SwiftUI
 
-/// Ponto de entrada do app. Monta a navegação raiz via `RootCoordinator`
-/// (UIKit) e a expõe ao SwiftUI através de `RootView`.
+/// Entry point of the app. Builds the root navigation via `RootCoordinator`
+/// (UIKit) and exposes it to SwiftUI through `RootView`.
 @main
 struct SuperAppApp: App {
     @StateObject private var rootCoordinator = RootCoordinator()
